@@ -5,9 +5,11 @@ import axios, { AxiosError } from 'axios';
 
 interface CreateAccountProps {
     logoName: string;
+    loggedInUser: any;
+    setLoggedInUser: (user: any) => void;
 }
 
-const CreateAccount: React.FC<CreateAccountProps> = ({ logoName }) => {
+const CreateAccount: React.FC<CreateAccountProps> = ({ logoName, loggedInUser, setLoggedInUser }) => {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -36,8 +38,25 @@ const CreateAccount: React.FC<CreateAccountProps> = ({ logoName }) => {
             });
 
             if (response.status === 201) {
-                alert("Account created successfully");
-                navigate('/Login');
+                // Log the user in after successful account creation
+                const loginResponse = await axiosInstance.post('/users/login', {
+                    identifier: username,
+                    password,
+                });
+
+                if (loginResponse.status === 200) {
+                    if (loginResponse.data.user) {
+                        const { password, ...userWithoutPassword } = loginResponse.data.user;
+                        localStorage.setItem('authToken', loginResponse.data.token);
+                        localStorage.setItem('loggedInUser', JSON.stringify(userWithoutPassword));
+                        setLoggedInUser(userWithoutPassword); // Update the loggedInUser state
+                        navigate('/MyAccount');
+                    } else {
+                        setPasswordError("An error occurred while processing the user data.");
+                    }
+                } else {
+                    setPasswordError("Incorrect username or password.");
+                }
             }
         } catch (error: unknown) {
             console.error("Error creating account:", error);
@@ -58,6 +77,7 @@ const CreateAccount: React.FC<CreateAccountProps> = ({ logoName }) => {
             }
         }
     };
+
 
 
     return (

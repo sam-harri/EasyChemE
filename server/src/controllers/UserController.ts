@@ -4,7 +4,7 @@ import User from '../db/models/User';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
 
-export const createUser = async (req: Request, res: Response)=> {
+export const createUser = async (req: Request, res: Response) => {
     try {
         const { username, email, password } = req.body;
 
@@ -22,13 +22,10 @@ export const createUser = async (req: Request, res: Response)=> {
             }
         }
 
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-
         const newUser = new User({
             username,
             email,
-            password: hashedPassword,
+            password,
         });
 
         const createdUser = await newUser.save();
@@ -39,18 +36,21 @@ export const createUser = async (req: Request, res: Response)=> {
     }
 }
 
-
 export const loginUser = async (req: Request, res: Response) => {
-    const { username, password } = req.body;
+    const { identifier, password } = req.body;
 
     try {
-        const user = await User.findOne({ username });
+        // Find user with either matching username or email
+        const user = await User.findOne({
+            $or: [{ username: identifier }, { email: identifier }],
+        });
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
+
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid password' });
         }
@@ -62,10 +62,26 @@ export const loginUser = async (req: Request, res: Response) => {
             { expiresIn: '1d' }
         );
 
-        res.status(200).json({ message: 'User logged in successfully', token });
+        // Remove the password from the user object
+        const userWithoutPassword = {
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+            // Add any other properties of the user object you want to include
+        };
+
+        res.status(200).json({
+            message: 'User logged in successfully',
+            token,
+            user: userWithoutPassword,
+        });
     } catch (error) {
         res.status(500).json({ message: 'Error logging in user', error });
     }
 };
+
+
+
+
 
 

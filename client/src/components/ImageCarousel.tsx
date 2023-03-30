@@ -16,16 +16,6 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, texts, stexts }) 
     }
     const imgStyle: CSSProperties = { objectFit: "cover", width: "100%", maxHeight: "700px" };
     const carouselRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            const nextButton = document.querySelector<HTMLButtonElement>('.carousel-control-next');
-            if (nextButton) {
-                nextButton.click();
-            }
-        }, 10000);
-    }, []);
-
     const scrollToClassesList = () => {
         const missionclassbreak = document.getElementById("missionclassbreak");
         if (missionclassbreak) {
@@ -51,7 +41,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, texts, stexts }) 
     };
 
     return (
-        <div ref={carouselRef} id="carouselExample" className="carousel slide image-carousel" data-bs-ride="carousel" data-bs-interval="10000">
+        <div ref={carouselRef} id="carouselExample" className="carousel slide image-carousel" data-bs-ride="carousel" data-bs-interval="7000">
             <div className="carousel-inner">
                 {images.map((image, index) => (
                     <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
