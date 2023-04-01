@@ -1,5 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import QuestionList from '../../components/QuestionList';
 
 interface CHG1125Props {
     loggedInUser: any;
@@ -34,6 +35,7 @@ const CHG1125M1: React.FC<CHG1125Props> = ({ loggedInUser, setLoggedInUser }) =>
             <p>
                 Derived dimensions are combinations of the basic dimensions, such as area (L²), volume (L³), velocity (L/T), and acceleration (L/T²). Understanding dimensions is essential for converting between different units and ensuring the consistency of units in calculations.
             </p>
+            <QuestionList courseCode={'1125'} courseModule={'1'} loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>
         </div>
     );
 };

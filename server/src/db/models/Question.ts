@@ -7,15 +7,15 @@ const questionSchema = new mongoose.Schema({
         unique: true,
     },
     classCode: {
-        type: Number,
+        type: String,
         required: true,
     },
     module: {
-        type: Number,
+        type: String,
         required: true,
     },
     questionNumber: {
-        type: Number,
+        type: String,
         required: true,
     },
     question: {

@@ -1,6 +1,6 @@
 //libraries
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 
 //Components
@@ -59,33 +59,23 @@ function App() {
             />
 
             <Route path="/login" element={
-              <>
                 <LoginPage logoName={logoModel.logo} setLoggedInUser={setLoggedInUser} />
-              </>
             } />
 
             <Route
-              path="/CreateAccount"
-              element={
-                <>
-                  <CreateAccount logoName={logoModel.logo} loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
-                </>
-              }
-            />
+              path="/CreateAccount"element={
+                <CreateAccount logoName={logoModel.logo} loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
+            } />
 
             <Route
-              path="/MyAccount"
-              element={
-                <>
-                  <MyAccount />
-                </>
-              }
-            />
+              path="/MyAccount" element={
+                <MyAccount loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>
+            } />
 
             <Route
-              path="/CHG1125/*"
-              element={<CHG1125 loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />}
-            />
+              path="/CHG1125/*"element={
+              <CHG1125 loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
+            } />
 
           </Routes>
         </main>

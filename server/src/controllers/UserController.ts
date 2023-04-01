@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import User from '../db/models/User';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
+import UserProgress from '../db/models/UserProgress';
 
 export const createUser = async (req: Request, res: Response) => {
     try {
@@ -27,8 +28,17 @@ export const createUser = async (req: Request, res: Response) => {
             email,
             password,
         });
-
         const createdUser = await newUser.save();
+
+        const newProgress = new UserProgress({
+            userId: createdUser._id,
+            bookmarkedQuestions: {},
+            completedQuestions: {},
+            enrolledCourses: [],
+        });
+
+        await newProgress.save();
+
         res.status(201).json(createdUser);
     } catch (error) {
         console.error('Error creating user:', error);

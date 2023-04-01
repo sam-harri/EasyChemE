@@ -2,13 +2,18 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import userRoutes from './routes/userRoutes';
-import userActivityRoutes from './routes/userActivityRoutes';
 import { connectDB } from './db/connectDB';
 import { errorHandler } from './middleware/errorHandler';
 
+import userRoutes from './routes/userRoutes';
+import questionRoutes from './routes/questionRoutes';
+import userProgressRoutes from './routes/userProgressRoutes'
+
+import { insertData } from './db/addingData';
+
 dotenv.config();
 connectDB();
+// insertData();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -16,7 +21,8 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 app.use('/api/users', userRoutes);
-app.use('/api/user-activity', userActivityRoutes);
+app.use('/api/questions', questionRoutes);
+app.use('/api/userProgress', userProgressRoutes);
 
 
 app.use(errorHandler);
@@ -24,3 +30,4 @@ app.use(errorHandler);
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+

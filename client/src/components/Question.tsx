@@ -1,27 +1,128 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BiBookmark, BiBookmarkAlt, BiCheck } from 'react-icons/bi';
 import { IoCheckmarkCircleSharp } from 'react-icons/io5';
 import { AiOutlineCaretDown, AiOutlineCaretUp } from 'react-icons/ai';
+import axiosInstance from '../axiosInstance';
+import { useNavigate } from 'react-router-dom';
+
+
+declare global {
+    interface Window {
+        MathJax: {
+            typesetPromise: (elements?: HTMLElement[]) => Promise<void>;
+        };
+    }
+}
 
 interface QuestionProps {
     questionID: string;
+    classCode: string,
+    module: string,
+    questionNumber: string;
     question: string;
-    answer: JSX.Element;
+    answer: string;
+    loggedInUser: any;
+    setLoggedInUser: (user: any) => void;
 }
 
-const Question: React.FC<QuestionProps> = ({ questionID: questionNumber, question, answer }) => {
+const Question: React.FC<QuestionProps> = ({
+    questionID,
+    classCode,
+    module,
+    questionNumber,
+    question,
+    answer,
+    loggedInUser,
+    setLoggedInUser,
+}) => {
     const [showAnswer, setShowAnswer] = useState(false);
     const [bookmarkToggled, setBookmarkToggled] = useState(false);
     const [checkToggled, setCheckToggled] = useState(false);
+
+    const answerRef = useRef<HTMLDivElement>(null);
+    const questionRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
+
+    const fetchUserBookmarks = async () => {
+        try {
+            const response = await axiosInstance.get('/userProgress/getUserBookmarks', {
+                params: { userId: loggedInUser._id },
+            });
+            return response.data.bookmarkedQuestions[classCode] || [];
+        } catch (error) {
+            console.error(error);
+            return [];
+        }
+    };
+
+    useEffect(() => {
+        const updateUserBookmarks = async () => {
+            if (loggedInUser) {
+                const userBookmarks = await fetchUserBookmarks();
+                setBookmarkToggled(userBookmarks.includes(questionID));
+            }
+        };
+
+        updateUserBookmarks();
+    }, [loggedInUser, questionID, classCode]);
+
+    useEffect(() => {
+        const handleMathJaxReady = () => {
+            if (window.MathJax) {
+                if (showAnswer && answerRef.current) {
+                    window.MathJax.typesetPromise([answerRef.current]);
+                }
+                if (questionRef.current) {
+                    window.MathJax.typesetPromise([questionRef.current]);
+                }
+            }
+        };
+
+        if (window.MathJax) {
+            if (showAnswer && answerRef.current) {
+                window.MathJax.typesetPromise([answerRef.current]);
+            }
+            if (questionRef.current) {
+                window.MathJax.typesetPromise([questionRef.current]);
+            }
+        } else {
+            document.addEventListener('MathJaxReady', handleMathJaxReady);
+        }
+
+        return () => {
+            document.removeEventListener('MathJaxReady', handleMathJaxReady);
+        };
+    }, [showAnswer]);
+
 
     const toggleAnswer = () => {
         setShowAnswer(!showAnswer);
     };
 
-    const toggleBookmark = () => {
-        setBookmarkToggled(!bookmarkToggled);
+    const toggleBookmark = async () => {
+        if (!loggedInUser) {
+            navigate('/login');
+            return;
+        }
+
+        const userId = loggedInUser._id;
+        const body = { courseId: classCode, questionId: questionID, userId };
+
+        try {
+            if (bookmarkToggled) {
+                setBookmarkToggled(false)
+                await axiosInstance.patch('/userProgress/unbookmarkQuestion', body);
+            } else {
+                setBookmarkToggled(true);
+                await axiosInstance.patch('/userProgress/bookmarkQuestion', body);
+            }
+        } catch (error) {
+            console.error(error);
+        }
     };
+
+
 
     const toggleCheck = () => {
         setCheckToggled(!checkToggled);
@@ -29,32 +130,34 @@ const Question: React.FC<QuestionProps> = ({ questionID: questionNumber, questio
 
     const goldenColor = '#ffdf00';
     const bootstrapBlue = '#0d6efd';
-    const green = 'green'
+    const green = 'green';
 
     return (
-        <div className="card mb-3 mx-auto" style={{ maxWidth: '1300px' }}>
+        <div id={questionID} className="card mb-3 mx-auto" style={{ maxWidth: '1300px' }}>
             <div className="card-body d-flex align-items-center justify-content-between">
-                <div>
-                    <span className="fs-5 me-3">{questionNumber}.</span>
-                    <span className="fs-5">{question}</span>
+                <div style={{ display: 'inline-flex', alignItems: 'baseline' }}>
+                    <span className="fs-5 mt-3">{questionNumber}.&nbsp;&nbsp;&nbsp;</span>
+                    <div className="fs-5 mt-3" ref={questionRef} dangerouslySetInnerHTML={{ __html: question }}></div>
                 </div>
                 <div>
-                    {bookmarkToggled ? (
-                        <span className="me-3" onClick={toggleBookmark}>
-                            <BiBookmarkAlt size={30} color={bootstrapBlue} />
-                        </span>
-                    ) : (
-                        <span className="me-3" onClick={toggleBookmark}>
-                            <BiBookmark size={30} />
-                        </span>
-                    )}
+                    {loggedInUser ? (
+                        bookmarkToggled ? (
+                            <span className="me-3" onClick={toggleBookmark}>
+                                <BiBookmarkAlt size={30} color={bootstrapBlue} />
+                            </span>
+                        ) : (
+                            <span className="me-3" onClick={toggleBookmark}>
+                                <BiBookmark size={30} />
+                            </span>
+                        )
+                    ) : null}
                     {checkToggled ? (
                         <span className="text-success me-3" onClick={toggleCheck}>
                             <IoCheckmarkCircleSharp size={30} color={bootstrapBlue} />
                         </span>
                     ) : (
                         <span className="text-primary me-3" onClick={toggleCheck}>
-                            <BiCheck size={30} color='black' />
+                            <BiCheck size={30} color="black" />
                         </span>
                     )}
                     {showAnswer ? (
@@ -71,11 +174,12 @@ const Question: React.FC<QuestionProps> = ({ questionID: questionNumber, questio
             {showAnswer && (
                 <div className="card-body border-top">
                     <div className="fw-bold mb-2">Answer:</div>
-                    {answer}
+                    <div ref={answerRef} dangerouslySetInnerHTML={{ __html: answer }}></div>
                 </div>
             )}
         </div>
     );
+
 };
 
 export default Question;

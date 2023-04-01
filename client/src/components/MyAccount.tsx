@@ -13,11 +13,19 @@ interface Course {
 
 interface QuestionProps {
     questionID: string;
+    classCode: string;
+    module: string;
+    questionNumber: string,
     question: string;
-    answer: JSX.Element;
+    answer: string;
 }
 
-const MyAccount: React.FC = () => {
+interface MyAccountProps {
+    loggedInUser: any;
+    setLoggedInUser: (user: any) => void;
+}
+
+const MyAccount: React.FC<MyAccountProps> = ({ loggedInUser, setLoggedInUser }) => {
     // Replace with data fetched from your API or state management
     const enrolledCourses: Course[] = [
         {
@@ -48,32 +56,19 @@ const MyAccount: React.FC = () => {
 
     const bookmarkedQuestions: QuestionProps[] = [
         {
-            questionID: "1",
-            question: "What is the capital of France?",
-            answer: <p>The capital of France is Paris.</p>,
-        },
-        {
-            questionID: "2",
-            question: "What is the largest mammal?",
-            answer: <p>The largest mammal is the blue whale.</p>,
-        },
-        {
-            questionID: "3",
-            question: "What is the tallest mountain in the world?",
-            answer: <p>The tallest mountain in the world is Mount Everest.</p>,
-        },
-        {
-            questionID: "4",
-            question: "What is the smallest planet in our solar system?",
-            answer: <p>The smallest planet in our solar system is Mercury.</p>,
-        },
-        {
-            questionID: "5",
-            question: "What is the most populous country in the world?",
-            answer: <p>The most populous country in the world is China.</p>,
+            questionID: "112500010001",
+            classCode : '1125',
+            module : '1',
+            questionNumber: '1',
+            question:
+                "<p>What is the solution to the equation $f(x) = 3x^3 - 2x^2 + x - 4$ fart poop one two</p>",
+            answer:
+                "<p>The Pythagorean theorem states that for a right triangle with legs of length $a$ and $b$, and hypotenuse of length $c$, the following equation holds: $a^2 + b^2 = c^2$.</p><img src='https://via.placeholder.com/150' alt='placeholder'/>",
         },
     ];
 
+
+    //<img src='https://via.placeholder.com/150' alt='placeholder'/>
 
     return (
         <div className="container mb-5">
@@ -83,7 +78,6 @@ const MyAccount: React.FC = () => {
                     enrolledCourses.map((course) => (
                         <div key={course.id} className="col-lg-4 col-md-6 mb-4">
                             <div className="card h-100">
-                                {/* Replace with a real thumbnail URL */}
                                 <img src={course.image} className="card-img-top" alt={`${course.title} thumbnail`} />
                                 <div className="card-body">
                                     <h4 className="card-title">{course.title}</h4>
@@ -121,8 +115,13 @@ const MyAccount: React.FC = () => {
                 bookmarkedQuestions.map((question, index) => (
                     <Question
                         questionID={question.questionID}
+                        classCode={question.classCode}
+                        module={question.module}
+                        questionNumber={question.questionNumber}
                         question={question.question}
                         answer={question.answer}
+                        loggedInUser={loggedInUser}
+                        setLoggedInUser={setLoggedInUser}
                     />
                 ))
             ) : (
