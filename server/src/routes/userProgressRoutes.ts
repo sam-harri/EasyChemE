@@ -1,15 +1,19 @@
 import express from 'express';
-import { enrollInCourse, unenrollFromCourse, bookmarkQuestion, unbookmarkQuestion, completeQuestion, removeCompletedQuestion, getUserBookmarks } from '../controllers/userProgressController';
+import {  getEnrolledClassesWithStats, getAllBookmarked , getUserEnrolled, enrollInCourse, unenrollInCourse, bookmarkQuestion, unbookmarkQuestion, completeQuestion, removeCompletedQuestion, getUserBookmarks, getUserCompleted } from '../controllers/userProgressController';
 
 const router = express.Router();
 
 router.patch('/enrollInCourse', enrollInCourse);
-router.patch('/unenrollFromCourse', unenrollFromCourse);
+router.patch('/unenrollInCourse', unenrollInCourse);
 router.patch('/bookmarkQuestion', bookmarkQuestion);
 router.patch('/unbookmarkQuestion', unbookmarkQuestion);
 router.patch('/completeQuestion', completeQuestion);
 router.patch('/removeCompletedQuestion', removeCompletedQuestion);
 router.get('/getUserBookmarks', getUserBookmarks);
+router.get('/getUserCompleted', getUserCompleted);
+router.get('/getUserEnrolled', getUserEnrolled);
+router.get('/getAllBookmarked', getAllBookmarked)
+router.get('/getEnrolledClassesWithStats', getEnrolledClassesWithStats)
 
 export default router;
 

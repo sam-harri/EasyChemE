@@ -56,15 +56,28 @@ const Question: React.FC<QuestionProps> = ({
         }
     };
 
+    const fetchUserCompleted = async () => {
+        try {
+            const response = await axiosInstance.get('/userProgress/getUserCompleted', {
+                params: { userId: loggedInUser._id },
+            });
+            return response.data.completeQuestions[classCode] || [];
+        } catch (error) {
+            console.error(error);
+            return [];
+        }
+    };
+
     useEffect(() => {
-        const updateUserBookmarks = async () => {
+        const updateUserQuestions = async () => {
             if (loggedInUser) {
                 const userBookmarks = await fetchUserBookmarks();
                 setBookmarkToggled(userBookmarks.includes(questionID));
+                const userCompleted = await fetchUserCompleted();
+                setCheckToggled(userCompleted.includes(questionID))
             }
         };
-
-        updateUserBookmarks();
+        updateUserQuestions();
     }, [loggedInUser, questionID, classCode]);
 
     useEffect(() => {
@@ -122,10 +135,26 @@ const Question: React.FC<QuestionProps> = ({
         }
     };
 
+    const toggleCheck = async () => {
+        if (!loggedInUser) {
+            navigate('/login');
+            return;
+        }
 
+        const userId = loggedInUser._id;
+        const body = { courseId: classCode, questionId: questionID, userId };
 
-    const toggleCheck = () => {
-        setCheckToggled(!checkToggled);
+        try {
+            if (checkToggled) {
+                setCheckToggled(false);
+                await axiosInstance.patch('/userProgress/removeCompletedQuestion', body);
+            } else {
+                setCheckToggled(true);
+                await axiosInstance.patch('/userProgress/completeQuestion', body);
+            }
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const goldenColor = '#ffdf00';
@@ -140,18 +169,25 @@ const Question: React.FC<QuestionProps> = ({
                     <div className="fs-5 mt-3" ref={questionRef} dangerouslySetInnerHTML={{ __html: question }}></div>
                 </div>
                 <div>
-                    {loggedInUser ? (
-                        bookmarkToggled ? (
-                            <span className="me-3" onClick={toggleBookmark}>
-                                <BiBookmarkAlt size={30} color={bootstrapBlue} />
-                            </span>
-                        ) : (
-                            <span className="me-3" onClick={toggleBookmark}>
-                                <BiBookmark size={30} />
-                            </span>
-                        )
-                    ) : null}
+                    {bookmarkToggled ? (
+                        <span className="me-3" onClick={loggedInUser ? toggleBookmark : () => navigate('/login')}>
+                            <BiBookmarkAlt size={30} color={bootstrapBlue} />
+                        </span>
+                    ) : (
+                        <span className="me-3" onClick={loggedInUser ? toggleBookmark : () => navigate('/login')}>
+                            <BiBookmark size={30} />
+                        </span>
+                    )}
                     {checkToggled ? (
+                        <span className="me-3" onClick={loggedInUser ? toggleCheck : () => navigate('/login')}>
+                            <IoCheckmarkCircleSharp size={30} color={bootstrapBlue} />
+                        </span>
+                    ) : (
+                        <span className="me-3" onClick={loggedInUser ? toggleCheck : () => navigate('/login')}>
+                            <BiCheck size={30} color="black" />
+                        </span>
+                    )}
+                    {/* {checkToggled ? (
                         <span className="text-success me-3" onClick={toggleCheck}>
                             <IoCheckmarkCircleSharp size={30} color={bootstrapBlue} />
                         </span>
@@ -159,7 +195,7 @@ const Question: React.FC<QuestionProps> = ({
                         <span className="text-primary me-3" onClick={toggleCheck}>
                             <BiCheck size={30} color="black" />
                         </span>
-                    )}
+                    )} */}
                     {showAnswer ? (
                         <span className="text-muted" onClick={toggleAnswer}>
                             <AiOutlineCaretUp size={30} />

@@ -12,6 +12,7 @@ import CreateAccount from './components/CreateAccount';
 import ClassGrid from './components/ClassGrid';
 import MyAccount from './components/MyAccount';
 import CHG1125 from './classes/CHG1125/CHG1125';
+import CHG3111 from './classes/CHG3111/CHG3111';
 
 //models
 import { classesModel, carouselModel, herounitModel, logoModel } from './models/models';
@@ -53,7 +54,7 @@ function App() {
                   <div className="bg-light p-4" id="missionclassbreak">
                     <hr style={{ borderColor: 'black' }} />
                   </div>
-                  <ClassGrid classes={classesModel} />
+                  <ClassGrid classes={classesModel} loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>
                 </>
               }
             />
@@ -75,6 +76,11 @@ function App() {
             <Route
               path="/CHG1125/*"element={
               <CHG1125 loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
+            } />
+            
+            <Route
+              path="/CHG3111/*"element={
+              <CHG3111 loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
             } />
 
           </Routes>

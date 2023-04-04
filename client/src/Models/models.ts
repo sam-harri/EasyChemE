@@ -2,6 +2,7 @@
 import CHG1125 from '../img/classes/CHG1125.jpg'
 import CHG1371 from '../img/classes/CHG1371.jpg'
 import CHG2312 from '../img/classes/CHG2312.jpg'
+import CHG3111 from '../img/classes/CHG3111.jpg'
 
 //Carousel Imports
 import slide1 from '../img/carousel/slide1.jpg'
@@ -17,23 +18,29 @@ import logo from '../img/logo/logo.png'
 
 export const classesModel = [
     {
-        imageSrc: CHG1125,
-        title: 'Chemical Engineering Fundamentals',
-        code: 'CHG1125',
-        description: 'Chemical Engineering profession in relation to the chemical process industry. System of units, dimensions. Processes, process variables and flowcharts. Material balances: single and multiple units, recycle and bypass, reactive and non-reactive systems. Chemical equilibrium, single-phase and multi-phase systems, solutions, phase diagrams. Introduction to energy balances. Unit operations and instrumentation.'
+        imageSrc: CHG3111,
+        title: 'Unit Operations',
+        code: '3111',
+        description: "Study of distillation columns, extraction methods, water cooling, drying, leaching, and more, this core class in chemical engineering focuses on the fundamental principles underlying each unit operation and how to apply them in the design and optimization of chemical processes."
     },
     {
         imageSrc: CHG1371,
-        title: 'Numerical Methods and Engineering Computation in Chemical Engineering',
-        code: 'CHG1371',
-        description: "Study of advanced techniques in Excel and coding in Visual Basic for Applications (VBA). Numerical methods common to chemical engineering analysis and design, including linear least squares, empirical model building, methods for solving nonlinear equations and systems of equations using programming and Excel Solver, numerical integration and the solution of differential equations."
+        title: 'Numerical Methods and Engineering Computation',
+        code: '1371',
+        description: "Explore advanced numerical methods and the foundation of programming in Python. Topics include linear least squares, empirical model building, nonlinear equation solving with programming and Excel Solver, numerical integration, and differential equation solving through practical exercises."
     },
     {
-        imageSrc: CHG2312,
-        title: 'Fluid Flow',
-        code: 'CHG2312',
-        description: "Application of fluid flow principles to the solution of engineering problems. Macroscopic mass, momentum, and energy balances. Newtonian and non-Newtonian fluids, compressible and incompressible fluids. Friction factors and Reynolds numbers for flow in conduits, around submerged objects, in packed beds and porous media. Fluidization. Flow measurement, dimensional analysis."
+        imageSrc: CHG1125,
+        title: 'Chemical Engineering Fundamentals',
+        code: '1125',
+        description: 'Learn essential concepts in chemical engineering with this fundamentals class. Topics covered include systems of units, material balances for single and multiple units, recycle and bypass, reactive and non-reactive systems, chemical equilibrium, phase diagrams, and energy balances.'
     },
+    // {
+    //     imageSrc: CHG2312,
+    //     title: 'Fluid Flow',
+    //     code: 'CHG2312',
+    //     description: "Application of fluid flow principles to the solution of engineering problems. Macroscopic mass, momentum, and energy balances. Newtonian and non-Newtonian fluids, compressible and incompressible fluids. Friction factors and Reynolds numbers for flow in conduits, around submerged objects, in packed beds and porous media. Fluidization. Flow measurement, dimensional analysis."
+    // },
     // {
     //     imageSrc: ComingSoon,
     //     title: 'Introduction to Chemical Process Analysis and Designs',
@@ -63,12 +70,6 @@ export const classesModel = [
     //     title: 'Advanced Materials in Chemical Engineering',
     //     code: 'CHG3305',
     //     description: "An introduction to the fundamentals of materials science with special emphasis on materials and applications of interest to chemical engineers.  Biocompatibility and biomedical applications.  Corrosion. Conductivity.  Structure/property relationships in polymers, metals, ceramics, semiconducting materials, nanoporous materials and composites."
-    // },
-    // {
-    //     imageSrc: ComingSoon,
-    //     title: 'Unit Operations',
-    //     code: 'CHG3111',
-    //     description: "Design of industrial equipment for evaporation, drying, humidification, absorption and stripping in plate and packed towers, distillation, liquid-liquid extraction and adsorption"
     // },
     // {
     //     imageSrc: ComingSoon,

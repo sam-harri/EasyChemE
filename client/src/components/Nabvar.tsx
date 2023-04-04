@@ -1,7 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import { CSSProperties } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 interface NavbarProps {
     brandImage: string;
@@ -11,11 +12,13 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ brandImage, loggedInUser, setLoggedInUser }) => {
     const fontStyle: CSSProperties = { color: 'black', fontSize: '20px' };
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         localStorage.removeItem('authToken');
         localStorage.removeItem('loggedInUser');
         setLoggedInUser(null);
+        navigate('/');
     };
 
     return (

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import Question from '../db/models/Question'
+import Question from '../db/models/Question';
 
 export const getQuestions = async (req: Request, res: Response) => {
     const { courseCode, courseModule } = req.query;

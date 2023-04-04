@@ -8,9 +8,11 @@ interface ClassGridProps {
         code : string,
         description : string,
     }>;
+    loggedInUser: any;
+    setLoggedInUser: (user: any) => void;
 }
 
-const ClassGrid: React.FC<ClassGridProps> = ({ classes }) => {
+const ClassGrid: React.FC<ClassGridProps> = ({ classes, loggedInUser, setLoggedInUser }) => {
     const classList = classes.map((classItem, index) => (
         <Class
             key={classItem.title}
@@ -18,6 +20,8 @@ const ClassGrid: React.FC<ClassGridProps> = ({ classes }) => {
             description={classItem.description}
             imageSrc={classItem.imageSrc}
             code={classItem.code}
+            loggedInUser={loggedInUser}
+            setLoggedInUser={setLoggedInUser}
         />
     ));
 
