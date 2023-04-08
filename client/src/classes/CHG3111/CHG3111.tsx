@@ -14,7 +14,7 @@ const CHG3111: React.FC<CHG1125Props> = ({ loggedInUser, setLoggedInUser }) => {
         <div>
             <Routes>
                 <Route path="/" element={<CHG3111Home loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />} />
-                <Route path="module1" element={<CHG3111M1 loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />} />
+                <Route path="/module1" element={<CHG3111M1 loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />} />
                 {/* Add more module routes here */}
             </Routes>
             <Outlet />

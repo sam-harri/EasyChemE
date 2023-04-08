@@ -19,10 +19,11 @@ const Navbar: React.FC<NavbarProps> = ({ brandImage, loggedInUser, setLoggedInUs
         localStorage.removeItem('loggedInUser');
         setLoggedInUser(null);
         navigate('/');
+        window.location.reload();
     };
 
     return (
-        <nav className="navbar navbar-light bg-light fixed-top" style={{ height: '70px', overflow: 'visible' }}>
+        <nav className="navbar navbar-light fixed-top" style={{ height: '70px', overflow: 'visible', backgroundColor: 'transparent' }}>
             <div className="container-fluid">
                 <Link to="/" className="navbar-brand">
                     <img src={brandImage} alt="Logo" width="auto" height="40" className="d-inline-block align-text-top me-2" />
@@ -51,6 +52,7 @@ const Navbar: React.FC<NavbarProps> = ({ brandImage, loggedInUser, setLoggedInUs
                 </ul>
             </div>
         </nav>
+
     );
 };
 
