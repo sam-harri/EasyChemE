@@ -38,7 +38,6 @@ const CreateAccount: React.FC<CreateAccountProps> = ({ logoName, loggedInUser, s
             });
 
             if (response.status === 201) {
-                // Log the user in after successful account creation
                 const loginResponse = await axiosInstance.post('/users/login', {
                     identifier: username,
                     password,
@@ -49,7 +48,7 @@ const CreateAccount: React.FC<CreateAccountProps> = ({ logoName, loggedInUser, s
                         const { password, ...userWithoutPassword } = loginResponse.data.user;
                         localStorage.setItem('authToken', loginResponse.data.token);
                         localStorage.setItem('loggedInUser', JSON.stringify(userWithoutPassword));
-                        setLoggedInUser(userWithoutPassword); // Update the loggedInUser state
+                        setLoggedInUser(userWithoutPassword);
                         navigate('/MyAccount');
                     } else {
                         setPasswordError("An error occurred while processing the user data.");

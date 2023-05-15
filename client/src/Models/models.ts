@@ -1,18 +1,13 @@
-//classes imports
 import CHG1125 from '../img/classes/CHG1125.jpg'
 import CHG1371 from '../img/classes/CHG1371.jpg'
 import CHG2312 from '../img/classes/CHG2312.jpg'
 import CHG3111 from '../img/classes/CHG3111.jpg'
 
-//Carousel Imports
 import slide1 from '../img/carousel/slide1.jpg'
 import slide2 from '../img/carousel/slide2.jpg'
 
-//herounitModem Imports
 import icon from '../img/logo/icon.png'
 
-//logoModel Imports
-//icon alreaedy imported in herounitModel
 import logo from '../img/logo/logo.png'
 
 

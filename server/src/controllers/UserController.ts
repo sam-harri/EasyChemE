@@ -1,4 +1,3 @@
-// controllers/UserController.ts
 import { Request, Response } from 'express';
 import User from '../db/models/User';
 import bcrypt from 'bcrypt'
@@ -8,8 +7,6 @@ import UserProgress from '../db/models/UserProgress';
 export const createUser = async (req: Request, res: Response) => {
     try {
         const { username, email, password } = req.body;
-
-        // Check if the username or email already exists
         const existingUser = await User.findOne({
             $or: [{ username: username }, { email: email }],
         });
@@ -50,7 +47,6 @@ export const loginUser = async (req: Request, res: Response) => {
     const { identifier, password } = req.body;
 
     try {
-        // Find user with either matching username or email
         const user = await User.findOne({
             $or: [{ username: identifier }, { email: identifier }],
         });
@@ -64,20 +60,15 @@ export const loginUser = async (req: Request, res: Response) => {
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid password' });
         }
-
-        // Generate a JWT token
         const token = jwt.sign(
             { id: user._id, username: user.username },
             process.env.JWT_SECRET as string,
             { expiresIn: '1d' }
         );
-
-        // Remove the password from the user object
         const userWithoutPassword = {
             _id: user._id,
             username: user.username,
             email: user.email,
-            // Add any other properties of the user object you want to include
         };
 
         res.status(200).json({

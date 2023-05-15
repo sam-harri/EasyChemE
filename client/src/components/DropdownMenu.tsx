@@ -4,7 +4,7 @@ import { CSSProperties } from 'react';
 interface DropdownMenuProps {
     isOpen: boolean;
     alignRight?: boolean;
-    items: string[]; // Add this prop
+    items: string[];
 }
 
 const DropdownMenu: React.FC<DropdownMenuProps> = ({ isOpen, alignRight, items }) => {

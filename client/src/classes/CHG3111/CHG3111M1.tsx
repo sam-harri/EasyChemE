@@ -1,7 +1,8 @@
-import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import QuestionList from '../../components/QuestionList';
 import DistillationSimulator from './Simulators/DistillationColumn';
+import React, { useState } from 'react';
+import { Form } from 'react-bootstrap';
 
 interface CHG3111Props {
     loggedInUser: any;
@@ -9,6 +10,11 @@ interface CHG3111Props {
 }
 
 const CHG3111M1: React.FC<CHG3111Props> = ({ loggedInUser, setLoggedInUser }) => {
+
+    const [qImageSource, setqImageSource] = useState('https://placehold.co/960x960');
+    const [rectImageSource, setrectImageSource] = useState('https://placehold.co/960x960');
+    const [stripImageSource, setstripImageSource] = useState('https://placehold.co/960x960');
+
 
     return (
         <div className="container" style={{ marginTop: '70px' }}>
@@ -130,12 +136,10 @@ const CHG3111M1: React.FC<CHG3111Props> = ({ loggedInUser, setLoggedInUser }) =>
                         <p className='lead text-center'>
                             A q value of 1 indicates a saturated liquid feed, while a q value of 0 represents a saturated vapor feed. For a feed mixture with both liquid and vapor phases, the q value ranges between 0 and 1. The q line starts at the feed composition on the x-axis (xf) and extends to the intersection with the VLE line. <strong> The q line provides insight into the feed compostion and temperature</strong>
                         </p>
-                        <p className='lead text-center'>{`$$qLine = (\\frac{q}{q-1})x + (\\frac{z_f}{q-1})$$`}</p>
-                        <p className='lead text-center'>where $q$ is the percentage of liquid in the feed and $z_f$ is the composition in the feed</p>
                     </div>
-                    <div className='col-md-6'>
+                    <div className='col-md-6 position-relative'>
                         <img
-                            src="https://placehold.co/960x960" //diagram w azotrope and VLE
+                            src={qImageSource}
                             alt="Description"
                             className="img-fluid"
                             style={{
@@ -143,10 +147,120 @@ const CHG3111M1: React.FC<CHG3111Props> = ({ loggedInUser, setLoggedInUser }) =>
                                 borderRadius: '5px',
                                 border: '1px solid black',
                             }} />
+                        <div className="position-absolute bottom-0 start-0 end-0 d-flex justify-content-center">
+                            <Form.Check
+                                type="radio"
+                                id="image1"
+                                value="https://placehold.co/960x960" // diagram w/ azeotrope and VLE
+                                checked={qImageSource === 'https://placehold.co/960x960'}
+                                onClick={() => setqImageSource('https://placehold.co/960x960')}
+                                label=""
+                                className="me-2"
+                            />
+                            <Form.Check
+                                type="radio"
+                                id="image2"
+                                value="https://placehold.co/960x960/alternate" // alternate diagram
+                                checked={qImageSource === 'https://placehold.co/960x960/white/blue'}
+                                onClick={() => setqImageSource('https://placehold.co/960x960/white/blue')}
+                                label=""
+                                className="ms-2"
+                            />
+                        </div>
                     </div>
                 </div>
 
+                <div className='row my-5'>
+                    <div className='col-md-6 position-relative'>
+                        <img
+                            src={rectImageSource}
+                            alt="Description"
+                            className="img-fluid"
+                            style={{
+                                aspectRatio: '1/1',
+                                borderRadius: '5px',
+                                border: '1px solid black',
+                            }} />
+                        <div className="position-absolute bottom-0 start-0 end-0 d-flex justify-content-center">
+                            <Form.Check
+                                type="radio"
+                                id="image1"
+                                value="https://placehold.co/960x960" // diagram w/ azeotrope and VLE
+                                checked={rectImageSource === 'https://placehold.co/960x960'}
+                                onClick={() => setrectImageSource('https://placehold.co/960x960')}
+                                label=""
+                                className="me-2"
+                            />
+                            <Form.Check
+                                type="radio"
+                                id="image2"
+                                value="https://placehold.co/960x960/alternate" // alternate diagram
+                                checked={rectImageSource === 'https://placehold.co/960x960/white/blue'}
+                                onClick={() => setrectImageSource('https://placehold.co/960x960/white/blue')}
+                                label=""
+                                className="ms-2"
+                            />
+                        </div>
+                    </div>
+                    <div className='col-md-6 d-flex align-items-center justify-content-center flex-column' style={{ minHeight: '100%' }}>
+                        <h4 className='text-center'>Step 3: Draw the Rectifying Operating Line</h4>
+                        <p className='lead text-center'>
+                            The rectifying operating line represents the relationship between liquid and vapor compositions in the rectifying section of the distillation column where vapor moves upward and is enriched with the more volatile component, while the liquid flows downward and becomes richer in the less volatile component.
+                        </p>
+                        <p className='lead text-center'>
+                            The slope of this line depends on the reflux ratio, which is the ratio of the liquid returned to the column as reflux to the distillate product, and <strong> will always intersect the azeoptrpic line at the distillate compostion value </strong>
+                        </p>
+                        <p className='lead text-center'>
+                            Given that the reflux ratio is essentially a mass balance, the equation for the rectifying line can also be expressed in terms of liquid and vapor flow rates. This alternative representation can prove useful in determining column parameters, as the slope and y-intercept can be correlated to the flow rates.
+                        </p>
+                    </div>
+                </div>
 
+                <div className='row my-5'>
+                    <div className='col-md-6 d-flex align-items-center justify-content-center flex-column' style={{ minHeight: '100%' }}>
+                        <h4 className='text-center'>Step 4: Connect Stripping Line to Pinch Point</h4>
+                        <p className='lead text-center'>
+                            In the stripping section, the primary objective is to strip the more volatile component from the liquid as it flows downward. It is located below the feed entry point of the distillation column, and its purpose is to reduce the concentration of the more volatile component in the bottom product.
+                        </p>
+                        <p className='lead text-center'>
+                        To draw the stripping line, begin by locating the bottoms composition on the azeotropic line, and connect it to the point where the q-line intersects the rectifying line. This intersection is referred to as the pinch point, signifying the transition between the two sections and representing the tray at which the feed is introduced to the distillation column.
+                        </p>
+                        <p className='lead text-center'>
+                        
+                        </p>
+                    </div>
+                    <div className='col-md-6 position-relative'>
+                        <img
+                            src={stripImageSource}
+                            alt="Description"
+                            className="img-fluid"
+                            style={{
+                                aspectRatio: '1/1',
+                                borderRadius: '5px',
+                                border: '1px solid black',
+                            }} />
+                        <div className="position-absolute bottom-0 start-0 end-0 d-flex justify-content-center">
+                            <Form.Check
+                                type="radio"
+                                id="image1"
+                                value="https://placehold.co/960x960" // diagram w/ azeotrope and VLE
+                                checked={stripImageSource === 'https://placehold.co/960x960'}
+                                onClick={() => setstripImageSource('https://placehold.co/960x960')}
+                                label=""
+                                className="me-2"
+                            />
+                            <Form.Check
+                                type="radio"
+                                id="image2"
+                                value="https://placehold.co/960x960/alternate" // alternate diagram
+                                checked={stripImageSource === 'https://placehold.co/960x960/white/blue'}
+                                onClick={() => setstripImageSource('https://placehold.co/960x960/white/blue')}
+                                label=""
+                                className="ms-2"
+                            />
+                        </div>
+                    </div>
+                </div>
 
 
                 <h2 className="mt-4 text-center">Distillation Simulator</h2>

@@ -1,4 +1,3 @@
-// routes/userRoutes.ts
 import { Router } from 'express';
 import { createUser, loginUser } from '../controllers/UserController';
 

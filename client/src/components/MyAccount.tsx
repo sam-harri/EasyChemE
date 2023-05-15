@@ -1,7 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Question from './Question';
-import { Card } from 'react-bootstrap';
 import EnrollButton from './EnrollButton';
 import { useEffect, useState } from 'react';
 import axiosInstance from '../axiosInstance';
